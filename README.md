@@ -1,2 +1,1 @@
-# sublime-snippets
-My sublime snippets
+My sublime snippets.
