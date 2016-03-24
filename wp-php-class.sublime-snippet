@@ -1,0 +1,63 @@
+<snippet>
+	<content><![CDATA[
+if ( ! defined ( 'ABSPATH' ) ) {
+	exit;
+}
+
+if ( ! class_exists( '$1' ) ) {
+	/**
+	 * $3
+	 *
+	 * @since  $2
+	 */
+	class $1 {
+		/**
+		 * Class instance.
+		 *
+		 * @var null
+		 */
+		protected static \$instance = null;
+
+		/**
+		 * Get instance.
+		 *
+		 * @since  $2
+		 * @return object
+		 */
+		public static function get_instance() {
+			if ( null === self::\$instance ) {
+				self::\$instance = new self;
+			}
+			return self::\$instance;
+		}
+
+		/**
+		 * Construct
+		 *
+		 * @since  $2
+		 */
+		function __construct() {
+
+		}
+	} // $1
+
+	/**
+	 * Access $1.
+	 *
+	 * @since
+	 * @return object $1.
+	 */
+	function $1() {
+		return $1::get_instance();
+	}
+
+	// Kick off!
+	$1();
+}
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>wp.php.class</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.php</scope>
+</snippet>
