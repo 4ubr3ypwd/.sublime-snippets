@@ -249,7 +249,9 @@ class $1 {
 			\$this->element_slug
 		);
 
-		return \$output;
+		ob_start(); ?>
+			<!-- Output -- >
+		<?php return ob_get_clean();
 	}
 }
 ]]></content>
