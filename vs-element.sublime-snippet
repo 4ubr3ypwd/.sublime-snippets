@@ -1,0 +1,260 @@
+<snippet>
+	<content><![CDATA[
+/**
+ * $5
+ *
+ * @version NEXT
+ * @package WDS Visual Composer
+ */
+class $1 {
+	/**
+	 * Set the element name.
+	 */
+	private \$element_slug = '$2';
+
+	/**
+	 * Parent plugin class
+	 *
+	 * @since NEXT
+	 * @var   class
+	 */
+	protected \$plugin = null;
+
+	/**
+	 * Class instance.
+	 *
+	 * @since  NEXT
+	 * @var null
+	 */
+	protected static \$instance = null;
+
+	/**
+	 * CMB2 instance.
+	 *
+	 * @since  NEXT
+	 * @var object
+	 */
+	protected \$cmb2;
+
+	/**
+	 * Fields
+	 *
+	 * @since  NEXT
+	 * @var array
+	 */
+	protected \$fields = array();
+
+	/**
+	 * Get instance.
+	 *
+	 * @since NEXT
+	 * @return object
+	 */
+	public static function get_instance() {
+		if ( null === self::\$instance ) {
+			self::\$instance = new self;
+		}
+
+		return self::\$instance;
+	}
+
+	/**
+	 * Constructor.
+	 *
+	 * @since  NEXT
+	 * @param  object \$plugin Main plugin object.
+	 * @return void
+	 */
+	public function __construct( \$plugin = false ) {
+		\$this->plugin = \$plugin;
+		\$this->hooks();
+	}
+
+	/**
+	 * Initiate our hooks.
+	 *
+	 * @since  NEXT
+	 * @return void
+	 */
+	public function hooks() {
+		add_action( 'vc_before_init', array( \$this, 'map_to_vc' ) );
+		add_action( 'init', array( \$this, 'register_shortcode' ) );
+		add_action( 'cmb2_init', array( \$this, 'cmb2_init' ) );
+	}
+
+	/**
+	 * Fields for editing hero in the header (non-VC element).
+	 *
+	 * Compiles fields similar to VC.
+	 *
+	 * @since  NEXT
+	 */
+	public function cmb2_init() {
+		// \$this->cmb2 = new_cmb2_box( array(
+		// 	'id'            => '_cmb2_primary_hero',
+		// 	'title'         => __( 'Primary Hero Settings', 'centralmarket' ),
+
+		// 	/*
+		// 	 * Please do not add custom CPT's here, but instead hook into this filter and add your
+		// 	 * post type when you create it.
+		// 	 */
+		// 	'object_types'  => apply_filters( '_cmb2_hero_object_types', array( 'page', 'post' ) ),
+		// 	'show_on_cb'    => apply_filters( '_cmb2_hero_show_on_cb', '__return_true' ),
+		// ) );
+
+		// foreach ( \$this->fields as \$field ) {
+		// 	if ( ! isset( \$field['cmb2_skip' ] ) || ! \$field['cmb2_skip' ] ) {
+		// 		\$this->cmb2->add_field( array(
+		// 			'name'       => \$field['heading'],
+		// 			'desc'       => \$field['description'],
+		// 			'id'         => "_{\$field['param_name']}",
+		// 			'type'       => \$this->vc_to_cmb2_map( 'type', \$field['type'] ),
+		// 			'default'    => \$field['value'],
+		// 			'show_on_cb' => 'yourprefix_hide_if_no_cats', // function should return a bool value
+		// 		) );
+		// 	}
+		// }
+	}
+
+	/**
+	 * Mappings between VC things to CMB2 things.
+	 *
+	 * @since  NEXT
+	 * @param  string \$base The map, e.g. 'type'.
+	 * @param  string \$sub  The CMB2 equivalent.
+	 * @return boolean|string       The CMB2 equivalent or false if nothing is found.
+	 */
+	private function vc_to_cmb2_map( \$base, \$sub ) {
+		\$map = array(
+			'type' => array(
+				// VC field      => CMB2 field.
+				'file_upload'    => 'file',
+				'textfield'      => 'text',
+				'textarea'       => 'textarea',
+				'paragraph_text' => 'textarea',
+				'colorpicker'    => 'colorpicker',
+			),
+		);
+
+		if ( isset( \$map[ \$base ][ \$sub ] ) ) {
+			return \$map[ \$base ][ \$sub ];
+		}
+
+		// Let the dev know there is something missing.
+		_doing_it_wrong( __METHOD__, sprintf( "A CMB2 equivalent for VC element '%s' of '%s' was not found.", \$base, \$sub ), 'NEXT' );
+
+		return false;
+	}
+
+	/**
+	 * Register a shortcode with WordPress.
+	 *
+	 * @since NEXT
+	 */
+	public function register_shortcode() {
+		add_shortcode( \$this->element_slug, array( \$this, 'shortcode_callback' ) );
+	}
+
+	/**
+	 * Register an element with VC.
+	 *
+	 * https://wpbakery.atlassian.net/wiki/pages/viewpage.action?pageId=524332
+	 *
+	 * @since NEXT
+	 */
+	public function map_to_vc() {
+		// Define element field types.
+		\$this->fields = array(
+			array(
+				'heading'     => __( 'Background Color', 'wds-visual-composer' ),
+				'description' => __( 'Required. If an image or video is uploaded below, that will display instead.', 'wds-visual-composer' ),
+				'type'        => 'colorpicker',
+				'holder'      => 'div',
+				'class'       => '',
+				'param_name'  => 'bg_color',
+				'value'       => '288edf',
+				'group'       => 'Background',
+			),
+			array(
+				'heading'     => __( 'Background Image or Video', 'wds-visual-composer' ),
+				'description' => __( 'Optional. Attach a .jpg, .png, or .mp4 video at least 1920x1080 (1080p) pixels.', 'wds-visual-composer' ),
+				'type'        => 'file_upload',
+				'holder'      => 'div',
+				'class'       => '',
+				'param_name'  => 'background_url',
+				'value'       => '',
+				'group'       => 'Background',
+				'cmb2_skip'   => true, // Don't show if we duplicate this in CMB2.
+			),
+			array(
+				'heading'     => __( 'Headline Text', 'wds-visual-composer' ),
+				'description' => __( 'Optional. Write a headline to grab the user\'s attention.', 'wds-visual-composer' ),
+				'type'        => 'textfield',
+				'holder'      => 'div',
+				'class'       => '',
+				'param_name'  => 'headline_text',
+				'value'       => '',
+				'group'       => 'Content',
+			),
+			array(
+				'heading'     => __( 'Paragraph Text', 'wds-visual-composer' ),
+				'description' => __( 'Optional. Write a blurb to compliment the headline.', 'wds-visual-composer' ),
+				'type'        => 'textarea',
+				'holder'      => 'div',
+				'class'       => '',
+				'param_name'  => 'paragraph_text',
+				'value'       => '',
+				'group'       => 'Content',
+			),
+			array(
+				'heading'     => __( 'Text Color', 'wds-visual-composer' ),
+				'description' => __( 'Set the color of both headline and paragraph text.', 'wds-visual-composer' ),
+				'type'        => 'colorpicker',
+				'holder'      => 'div',
+				'class'       => '',
+				'param_name'  => 'text_color',
+				'value'       => 'ffffff',
+				'group'       => 'Content',
+			),
+		);
+
+		// Define the element.
+		\$params = array(
+			'name'         => __( '$4', 'wds-visual-composer' ),
+			'base'         => \$this->element_slug,
+			'class'        => \$this->element_slug,
+			'category'     => array( __( 'Content', 'wds-visual-composer' ), __( 'WDS', 'wds-visual-composer' ), ),
+			'params'       => \$this->fields,
+			'icon'         => '',
+			'is_container' => false,
+		);
+
+		// Register the element with VC.
+		vc_map( \$params );
+	}
+
+	/**
+	 * Create the element front-end markup.
+	 *
+	 * @since  NEXT
+	 * @return Output.
+	 */
+	public function shortcode_callback( \$atts, \$content = null ) {
+		// Get element fields.
+		\$atts = shortcode_atts(
+			array(
+				// 'thing'            => 'value',
+			),
+			\$atts,
+			\$this->element_slug
+		);
+
+		return \$output;
+	}
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>vc-class</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
