@@ -8,27 +8,7 @@
 	 * @return {Object}
 	 */
 	\$.fn.${1:myObject} = function() {
-		var \$target = this; // Store the target element in this variable (jQuery stuff).
-
-		// Our stuff.
-		var app = {
-
-			/**
-			 * Run the Construct every time we create a new instance.
-			 *
-			 * @return {Object} This object.
-			 */
-			__construct: function() {
-				console.log( 'Loaded app...' );
-				console.log( app ); // Our stuff.
-				console.log( \$target ); // jQuery stuff.
-
-				return app; // Return to jQuery for chaining.
-			},
-		};
-
-		app.__construct(); // Always run these things when the Application is created.
-		return app; // return the Application so we can access other properties.
+		this.\$target = this; // Store the target element in this variable (jQuery stuff).
 	};
 } ( jQuery ) );
 
