@@ -1,6 +1,6 @@
 <snippet>
 	<content><![CDATA[
-error_log( print_r( $1, true ) );
+error_log( ${2:print_r}( array( $1, ), true ) );
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
 	<tabTrigger>errorlog</tabTrigger>

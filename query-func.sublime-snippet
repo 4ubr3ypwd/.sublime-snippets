@@ -1,0 +1,27 @@
+<snippet>
+	<content><![CDATA[
+function $1( \$args = array() ) {
+
+	// Allow function call to override and add other arguments.
+	\$args = wp_parse_args( \$args, array(
+
+		// Your arguments go here.
+		$2
+	) );
+
+	// Where the query will be stored.
+	static \$query = null;
+​
+	// Set the query if it hasn't already been set.
+	if ( is_null( \$query ) ) {
+		\$query = new WP_Query( \$args );
+	}
+​
+	return \$query;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>query-func</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.php</scope>
+</snippet>
