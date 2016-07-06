@@ -8,12 +8,11 @@
 	 * @return {Object}
 	 */
 	\$.fn.${1:myObject} = function() {
-		this.\$target = this; // Store the target element in this variable (jQuery stuff).
+		var \$${1:myObject} = this;
 	};
-} ( jQuery ) );
 
-// Kick it off.
-jQuery().${1:myObject}();
+	\$( document ).ready( \$.fn.${1:myObject} );
+} ( jQuery ) );
 
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
