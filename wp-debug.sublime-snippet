@@ -1,18 +1,32 @@
 <snippet>
 	<content><![CDATA[
-define( 'WP_DEBUG', true );
-
-if ( WP_DEBUG ) {
-	define( 'JETPACK_DEV_DEBUG', true );
-	define( 'WP_DEBUG_DISPLAY', false ); // Open debug.log instead, easier.
-	define( 'WP_DEBUG_LOG', true ); // Logs to debug.log
+/*
+ * WDS WP_DEBUG
+ */
+define( 'WP_DEBUG', true ); if ( WP_DEBUG ) {
+	define( 'JETPACK_DEV_DEBUG', true ); // Jetpack, uhm.... okay.
 	define( 'SCRIPT_DEBUG', true );
 	define( 'WP_CACHE', false );
-}
 
-@ini_set( 'upload_max_size' , '128M' );
-@ini_set( 'post_max_size', '128M');
-define( 'GF_LICENSE_KEY', 'bfe87eb5a587dbfdbd920629a94250b0' );
+	// Open debug.log instead, easier.
+	define( 'WP_DEBUG_DISPLAY', false );
+	define( 'WP_DEBUG_LOG', true ); // Logs to debug.log
+
+	// Big things, because this is 'Merica!
+	@ini_set( 'upload_max_size' , '128M' );
+	@ini_set( 'post_max_size', '128M');
+
+	// Gravity forms, make it easy.
+	define( 'GF_LICENSE_KEY', 'bfe87eb5a587dbfdbd920629a94250b0' );
+
+	// I hate deleting things twice!
+	define( 'EMPTY_TRASH_DAYS', 0 );
+
+	// SMTP on Dev server.
+	if ( file_exists( '/Users/aubreypwd/My Cubby/easy-wp-smtp.php' ) ) {
+		require( '/Users/aubreypwd/My Cubby/easy-wp-smtp.php' );
+	}
+}
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
 	<tabTrigger>wp-debug</tabTrigger>
