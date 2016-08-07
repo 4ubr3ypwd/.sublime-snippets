@@ -2,15 +2,21 @@
 	<content><![CDATA[
 \$.ajax( {
 	method: 'post',
-	url: $1,
+	url:    $1,
+
+	// Send this data.
 	data: {
 		action: $2,
 	},
-	success: function( data, status, jqXHR ) {
-		$3
-	},
-	error: function( jqXHR, status, error ) {
 
+	// Success.
+	success: function( data, status, jqXHR ) {
+		$4
+	},
+
+	// Failure.
+	error: function( jqXHR, status, error ) {
+		$3
 	}
 } );
 ]]></content>
