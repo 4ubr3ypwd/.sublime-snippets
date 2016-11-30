@@ -1,0 +1,33 @@
+<snippet>
+	<content><![CDATA[
+if ( ! window.hasOwnProperty( '${1:My_Object}' ) && 'undefined' !== jQuery ) {
+	/* globals jQuery */
+
+	/**
+	 * ${2:Description}
+	 *
+	 * @author ${3:Aubrey Portwood}
+	 *
+	 * @type {Object}
+	 */
+	window.${1:My_Object} = {};
+
+	/**
+	 * Init.
+	 *
+	 * @author ${3:Aubrey Portwood}
+	 *
+	 * @param  {Object} \$ jQuery
+	 */
+	( function( \$ ) {
+
+		${4:// Start Here}
+	} ).apply( window.${1:My_Object}, [ jQuery ] );
+}
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>wds-js2</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.js</scope>
+</snippet>
